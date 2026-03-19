@@ -19,6 +19,7 @@ local espObjects = {}
 -- Farm State
 local FARMING = false
 local COLLECT_WAIT = 2.0
+local TWEEN_SPEED = 62
 
 -- TweenService
 local resolvers = {
@@ -257,9 +258,9 @@ local function getMonadPositions()
 end
 
 local function goToMonad(pos)
-    local targetPos = Vector3.new(pos.X, pos.Y - 15, pos.Z)
+    local targetPos = Vector3.new(pos.X, pos.Y - 50, pos.Z)
 
-    local tween = tween_to(LocalPlayer, targetPos, 125, "ease_in_quad")
+    local tween = tween_to(LocalPlayer, targetPos, TWEEN_SPEED, "ease_in_quad")
     while not tween.completed do
         task.wait()
     end
@@ -382,6 +383,10 @@ local farmSection = farmTab:Section("Monads")
 farmSection:Toggle("Farm Enabled", false, function(value)
     FARMING = value
     notify(value and "Pearl Farm: ON" or "Pearl Farm: OFF", "Breadwinner", 2)
+end)
+
+farmSection:Slider("Tween Speed", 62, 1, 1, 125, "spd", function(value)
+    TWEEN_SPEED = value
 end)
 
 farmSection:Slider("Collect Hold", 2, 1, 1, 5, "s", function(value)
